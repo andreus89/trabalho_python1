@@ -35,6 +35,7 @@ mpef_list=[]
 qcc_list=[]
 dda_list=[]
 rac_list=[]
+mqcc_list=[]
 
 
 #input
@@ -120,17 +121,19 @@ for i in range(1,11):
     mpef_list.append(mpef)                
         
     while True:
-        med_dic[i]['Quantidade do composto principal por comprimido']=input('Quantidade(mg) do composto principal por comprimido?')
-        qcc_list.append(med_dic[i]['Quantidade do composto principal por comprimido'])
-        qcc=med_dic[i]['Quantidade do composto principal por comprimido']
-        if qcc == "exit":
-            sys.exit('Parada abrupta do programa!')
-        elif isReal(qcc):
+        try:
+            med_dic[i]['Quantidade do composto principal por comprimido']=float(input('Quantidade do composto principal por comprimido?(em mg)'))
+            qcc_list.append(med_dic[i]['Quantidade do composto principal por comprimido'])
+            qcc=med_dic[i]['Quantidade do composto principal por comprimido']
             break
-        print("Valor inválido!")
+        except ValueError:
+            print("Valor inválido!")
+            continue    
+    mqcc=mpef/qcc
+    mqcc_list.append(mqcc) 
         
     while True:
-        med_dic[i]['Dose diária para um adulto']=input('Dose diária para um adulto?')
+        med_dic[i]['Dose diária para um adulto']=input('Dose diária para um adulto?(em mg)')
         dda_list.append(med_dic[i]['Dose diária para um adulto'])
         dda=med_dic[i]['Dose diária para um adulto']
         if dda == "exit":
@@ -140,7 +143,7 @@ for i in range(1,11):
         print("Valor inválido!")
     
     while True:
-        med_dic[i]['As 3 reações adversa mais comuns']['A']=input('As 3 reações adversa mais comuns? Reação A: ')
+        med_dic[i]['As 3 reações adversa mais comuns']['A']=input('As 3 reações adversas mais comuns? Reação A: ')
         a=med_dic[i]['As 3 reações adversa mais comuns']['A']
         if a == "exit":
             sys.exit('Parada abrupta do programa!')
@@ -148,7 +151,7 @@ for i in range(1,11):
             break
         print("Valor inválido!")
     while True:
-        med_dic[i]['As 3 reações adversa mais comuns']['B']=input('As 3 reações adversa mais comuns? Reação B: ')
+        med_dic[i]['As 3 reações adversa mais comuns']['B']=input('As 3 reações adversas mais comuns? Reação B: ')
         b=med_dic[i]['As 3 reações adversa mais comuns']['B']
         if b == "exit":
             sys.exit('Parada abrupta do programa!')
@@ -156,7 +159,7 @@ for i in range(1,11):
             break
         print("Valor inválido!")
     while True:
-        med_dic[i]['As 3 reações adversa mais comuns']['C']=input('As 3 reações adversa mais comuns? Reação C: ')
+        med_dic[i]['As 3 reações adversa mais comuns']['C']=input('As 3 reações adversas mais comuns? Reação C: ')
         c=med_dic[i]['As 3 reações adversa mais comuns']['C']
         if c == "exit":
             sys.exit('Parada abrupta do programa!')
@@ -189,6 +192,27 @@ rects1 = plt.bar(index, mpef_list, bar_width,
 plt.xlabel('Medicamentos')
 plt.ylabel('Reais(R$)')
 plt.title('Valores por Medicamento')
+plt.xticks(index, (nc_list))
+plt.legend()
+ 
+plt.tight_layout()
+plt.show()
+
+
+#gráfico 2
+fig1, ax1 = plt.subplots()
+index = np.arange(i)
+bar_width = 0.15
+opacity = 0.8
+
+rects1 = plt.bar(index, mqcc_list, bar_width,
+                 alpha=opacity,
+                 color='r',
+                 label='Média por 1 mg')
+
+plt.xlabel('Medicamentos')
+plt.ylabel('Reais(R$)')
+plt.title('Média de Preço por Miligramas do Componente Principal')
 plt.xticks(index, (nc_list))
 plt.legend()
  
